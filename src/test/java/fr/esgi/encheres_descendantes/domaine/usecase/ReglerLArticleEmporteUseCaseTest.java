@@ -100,7 +100,7 @@ class ReglerLArticleEmporteUseCaseTest {
     }
 
     @Test
-    @DisplayName("le gagnant regle son article au montant exact de son offre")
+    @DisplayName("le gagnant règle son article au montant exact de son offre")
     void reglementReussi() {
         Reglement reglement = useCase.apply(
                 new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("970.00")));
@@ -112,7 +112,7 @@ class ReglerLArticleEmporteUseCaseTest {
     }
 
     @Test
-    @DisplayName("on ne regle pas une enchere qui n'est pas adjugee")
+    @DisplayName("on ne règle pas une enchère qui n'est pas adjugée")
     void enchereNonAdjugee() {
         ReglerLArticleEmporteUseCase uc = useCaseAvec(offre(StatutEnchere.OUVERTE), false);
 
@@ -121,14 +121,14 @@ class ReglerLArticleEmporteUseCaseTest {
     }
 
     @Test
-    @DisplayName("seul le participant qui a emporte l'article peut le regler")
+    @DisplayName("seul le participant qui a emporté l'article peut le régler")
     void mauvaisParticipant() {
         assertThrows(OperationInterditeException.class, () ->
                 useCase.apply(new ReglerLArticleEmporteCommande(100L, 1L, new BigDecimal("970.00"))));
     }
 
     @Test
-    @DisplayName("une offre deja reglee ne peut pas l'etre deux fois")
+    @DisplayName("une offre déjà réglée ne peut pas l'être deux fois")
     void dejaRegle() {
         ReglerLArticleEmporteUseCase uc = useCaseAvec(offre(StatutEnchere.ADJUGEE), true);
 
@@ -137,7 +137,7 @@ class ReglerLArticleEmporteUseCaseTest {
     }
 
     @Test
-    @DisplayName("le montant doit correspondre exactement a celui de l'offre")
+    @DisplayName("le montant doit correspondre exactement à celui de l'offre")
     void montantDifferent() {
         assertThrows(DonneesInvalidesException.class, () ->
                 useCase.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("500.00"))));

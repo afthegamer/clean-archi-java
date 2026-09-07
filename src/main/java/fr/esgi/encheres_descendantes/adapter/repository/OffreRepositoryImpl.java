@@ -31,7 +31,7 @@ public class OffreRepositoryImpl implements OffreRepository {
         Long participantId = offre.getParticipant().getId();
 
         EnchereEntity enchere = enchereJpaRepository.findById(enchereId)
-                .orElseThrow(() -> new RessourceIntrouvableException("Enchere", enchereId));
+                .orElseThrow(() -> new RessourceIntrouvableException("Enchère", enchereId));
         ParticipantEntity participant = participantJpaRepository.findById(participantId)
                 .orElseThrow(() -> new RessourceIntrouvableException("Participant", participantId));
 

@@ -60,7 +60,7 @@ public class SInscrireUseCase {
     private void verifierMotDePasse(String motDePasse) {
         if (motDePasse == null || motDePasse.length() < LONGUEUR_MINIMALE_MOT_DE_PASSE) {
             throw new DonneesInvalidesException(
-                    "Le mot de passe doit faire au moins " + LONGUEUR_MINIMALE_MOT_DE_PASSE + " caracteres");
+                    "Le mot de passe doit faire au moins " + LONGUEUR_MINIMALE_MOT_DE_PASSE + " caractères");
         }
     }
 }

@@ -122,7 +122,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("la premiere offre valide clot l'enchere et l'etat est persiste")
+    @DisplayName("la première offre valide clôt l'enchère et l'état est persisté")
     void adjudicationPersistee() {
         useCase.apply(new FaireUneOffreCommande(10L, 2L, new BigDecimal("970.00")));
 
@@ -132,7 +132,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("une offre sous le prix courant est refusee et rien n'est enregistre")
+    @DisplayName("une offre sous le prix courant est refusée et rien n'est enregistré")
     void montantInsuffisant() {
         assertThrows(MontantInsuffisantException.class, () ->
                 useCase.apply(new FaireUneOffreCommande(10L, 2L, new BigDecimal("960.00"))));
@@ -142,7 +142,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("le vendeur ne peut pas encherir sur sa propre enchere")
+    @DisplayName("le vendeur ne peut pas enchérir sur sa propre enchère")
     void vendeurExclu() {
         output = new OutputPortDeTest(enchereOuverte(), vendeur);
         useCase = new FaireUneOffreUseCase(output, horloge);
@@ -152,7 +152,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("une enchere deja adjugee refuse toute nouvelle offre")
+    @DisplayName("une enchère déjà adjugée refuse toute nouvelle offre")
     void dejaAdjugee() {
         avec(enchere(StatutEnchere.ADJUGEE, MAINTENANT.minusMinutes(3), MAINTENANT.plusHours(1)));
 
@@ -161,7 +161,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("pas d'offre sur une enchere pas encore commencee")
+    @DisplayName("pas d'offre sur une enchère pas encore commencée")
     void pasCommencee() {
         avec(enchere(StatutEnchere.OUVERTE, MAINTENANT.plusHours(1), MAINTENANT.plusHours(2)));
 
@@ -170,7 +170,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("pas d'offre sur une enchere terminee")
+    @DisplayName("pas d'offre sur une enchère terminée")
     void terminee() {
         avec(enchere(StatutEnchere.OUVERTE, MAINTENANT.minusHours(3), MAINTENANT.minusHours(1)));
 
@@ -179,7 +179,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("enchere introuvable")
+    @DisplayName("enchère introuvable")
     void enchereIntrouvable() {
         assertThrows(RessourceIntrouvableException.class, () ->
                 useCase.apply(new FaireUneOffreCommande(999L, 2L, new BigDecimal("970.00"))));
@@ -193,7 +193,7 @@ class FaireUneOffreUseCaseTest {
     }
 
     @Test
-    @DisplayName("un montant nul ou negatif est refuse avant tout acces au depot")
+    @DisplayName("un montant nul ou négatif est refusé avant tout accès au dépôt")
     void montantInvalide() {
         assertThrows(DonneesInvalidesException.class, () ->
                 useCase.apply(new FaireUneOffreCommande(10L, 2L, BigDecimal.ZERO)));

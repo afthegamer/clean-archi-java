@@ -39,19 +39,19 @@ public class ReglerLArticleEmporteUseCase {
 
         if (!offre.getEnchere().estAdjugee()) {
             throw new OperationInterditeException(
-                    "L'enchere n'est pas adjugee : il n'y a rien a regler");
+                    "L'enchère n'est pas adjugée : il n'y a rien à régler");
         }
         if (offre.getParticipant().getId() == null
                 || !offre.getParticipant().getId().equals(commande.participantId())) {
             throw new OperationInterditeException(
-                    "Seul le participant qui a emporte l'article peut le regler");
+                    "Seul le participant qui a emporté l'article peut le régler");
         }
         if (output.reglementExistePourOffre(offre.getId())) {
-            throw new OperationInterditeException("Cette offre a deja ete reglee");
+            throw new OperationInterditeException("Cette offre a déjà été réglée");
         }
         if (commande.montant() == null || commande.montant().compareTo(offre.getMontant()) != 0) {
             throw new DonneesInvalidesException(
-                    "Le reglement doit correspondre exactement au montant de l'offre : " + offre.getMontant());
+                    "Le règlement doit correspondre exactement au montant de l'offre : " + offre.getMontant());
         }
 
         return output.save(Reglement.nouveau(offre, commande.montant(), LocalDateTime.now(horloge)));

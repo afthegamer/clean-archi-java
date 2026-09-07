@@ -51,7 +51,7 @@ public class GestionnaireExceptions {
                 .map(this::decrire)
                 .toList();
         return ResponseEntity.badRequest()
-                .body(ErreurResponse.de(HttpStatus.BAD_REQUEST.value(), "Requete invalide", details));
+                .body(ErreurResponse.de(HttpStatus.BAD_REQUEST.value(), "Requête invalide", details));
     }
 
     private String decrire(FieldError erreur) {

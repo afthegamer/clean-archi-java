@@ -36,7 +36,7 @@ class SeConnecterUseCaseTest {
     }
 
     @Test
-    @DisplayName("l'email est normalise avant la recherche")
+    @DisplayName("l'email est normalisé avant la recherche")
     void emailNormalise() {
         Participant participant = useCase.apply(new SeConnecterCommande("  ALICE@ESGI.fr ", "motdepasse123"));
 
@@ -58,7 +58,7 @@ class SeConnecterUseCaseTest {
     }
 
     @Test
-    @DisplayName("email inconnu et mot de passe faux donnent le MEME message : pas d'enumeration de comptes")
+    @DisplayName("email inconnu et mot de passe faux donnent le MÊME message : pas d'énumération de comptes")
     void memeMessageDansLesDeuxCas() {
         String messageEmailInconnu = assertThrows(IdentifiantsInvalidesException.class, () ->
                 useCase.apply(new SeConnecterCommande("bob@esgi.fr", "motdepasse123"))).getMessage();

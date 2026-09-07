@@ -44,7 +44,7 @@ public class JeuDeDonneesInitial implements CommandLineRunner {
                 null,
                 "Vente flash - montre ancienne",
                 "Le prix baisse de 10 EUR toutes les 30 secondes",
-                List.of(Article.nouveau("Montre mecanique", "Boitier acier, revisee")),
+                List.of(Article.nouveau("Montre mécanique", "Boîtier acier, révisée")),
                 vendeur,
                 maintenant.minusMinutes(1),
                 maintenant.plusHours(2),
@@ -56,9 +56,9 @@ public class JeuDeDonneesInitial implements CommandLineRunner {
 
         enchereRepository.save(new Enchere(
                 null,
-                "Vente a venir - vase Art Deco",
+                "Vente à venir - vase Art Déco",
                 "Ouvre dans une heure",
-                List.of(Article.nouveau("Vase Art Deco", "Verre presse, 1930")),
+                List.of(Article.nouveau("Vase Art Déco", "Verre pressé, 1930")),
                 vendeur,
                 maintenant.plusHours(1),
                 maintenant.plusHours(3),

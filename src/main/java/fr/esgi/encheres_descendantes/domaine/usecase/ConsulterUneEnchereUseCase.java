@@ -33,7 +33,7 @@ public class ConsulterUneEnchereUseCase {
     public Resultat apply(Long enchereId) {
         LocalDateTime maintenant = LocalDateTime.now(horloge);
         Enchere enchere = output.trouverParId(enchereId)
-                .orElseThrow(() -> new RessourceIntrouvableException("Enchere", enchereId));
+                .orElseThrow(() -> new RessourceIntrouvableException("Enchère", enchereId));
         return new Resultat(enchere, enchere.prixA(maintenant), maintenant);
     }
 

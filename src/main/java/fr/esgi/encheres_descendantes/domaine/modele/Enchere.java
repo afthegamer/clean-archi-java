@@ -61,22 +61,22 @@ public class Enchere {
 
     private void verifierCoherence() {
         if (!dateHeureFin.isAfter(dateHeureDebut)) {
-            throw new DonneesInvalidesException("La date de fin doit etre posterieure a la date de debut");
+            throw new DonneesInvalidesException("La date de fin doit être postérieure à la date de début");
         }
         if (prixDeDepart.signum() <= 0) {
-            throw new DonneesInvalidesException("Le prix de depart doit etre strictement positif");
+            throw new DonneesInvalidesException("Le prix de départ doit être strictement positif");
         }
         if (prixPlancher.signum() < 0) {
-            throw new DonneesInvalidesException("Le prix plancher ne peut pas etre negatif");
+            throw new DonneesInvalidesException("Le prix plancher ne peut pas être négatif");
         }
         if (prixPlancher.compareTo(prixDeDepart) > 0) {
-            throw new DonneesInvalidesException("Le prix plancher ne peut pas depasser le prix de depart");
+            throw new DonneesInvalidesException("Le prix plancher ne peut pas dépasser le prix de départ");
         }
         if (pasDecrement.signum() <= 0) {
-            throw new DonneesInvalidesException("Le pas de decrement doit etre strictement positif");
+            throw new DonneesInvalidesException("Le pas de décrément doit être strictement positif");
         }
         if (intervalleDecrement.isZero() || intervalleDecrement.isNegative()) {
-            throw new DonneesInvalidesException("L'intervalle de decrement doit etre strictement positif");
+            throw new DonneesInvalidesException("L'intervalle de décrément doit être strictement positif");
         }
     }
 
@@ -103,19 +103,19 @@ public class Enchere {
 
     public void verifierOffreRecevable(Participant encherisseur, BigDecimal montant, LocalDateTime instant) {
         if (statut == StatutEnchere.ADJUGEE) {
-            throw new EnchereFermeeException("l'enchere a deja ete adjugee");
+            throw new EnchereFermeeException("l'enchère a déjà été adjugée");
         }
         if (statut == StatutEnchere.CLOTUREE) {
-            throw new EnchereFermeeException("l'enchere est cloturee");
+            throw new EnchereFermeeException("l'enchère est clôturée");
         }
         if (instant.isBefore(dateHeureDebut)) {
-            throw new EnchereFermeeException("l'enchere n'a pas encore commence");
+            throw new EnchereFermeeException("l'enchère n'a pas encore commencé");
         }
         if (instant.isAfter(dateHeureFin)) {
-            throw new EnchereFermeeException("l'enchere est terminee");
+            throw new EnchereFermeeException("l'enchère est terminée");
         }
         if (vendeur.estLeMemeQue(encherisseur)) {
-            throw new OperationInterditeException("Le vendeur ne peut pas encherir sur sa propre enchere");
+            throw new OperationInterditeException("Le vendeur ne peut pas enchérir sur sa propre enchère");
         }
         BigDecimal prixCourant = prixA(instant);
         if (montant.compareTo(prixCourant) < 0) {
@@ -125,14 +125,14 @@ public class Enchere {
 
     public void adjuger() {
         if (statut != StatutEnchere.OUVERTE) {
-            throw new EnchereFermeeException("l'enchere n'est plus ouverte");
+            throw new EnchereFermeeException("l'enchère n'est plus ouverte");
         }
         this.statut = StatutEnchere.ADJUGEE;
     }
 
     public void cloturerSansAcheteur() {
         if (statut != StatutEnchere.OUVERTE) {
-            throw new EnchereFermeeException("l'enchere n'est plus ouverte");
+            throw new EnchereFermeeException("l'enchère n'est plus ouverte");
         }
         this.statut = StatutEnchere.CLOTUREE;
     }

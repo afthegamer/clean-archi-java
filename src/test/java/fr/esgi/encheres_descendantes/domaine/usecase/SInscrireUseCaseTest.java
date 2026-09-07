@@ -56,7 +56,7 @@ class SInscrireUseCaseTest {
     }
 
     @Test
-    @DisplayName("le mot de passe est hache, jamais stocke en clair")
+    @DisplayName("le mot de passe est haché, jamais stocké en clair")
     void motDePasseHache() {
         Participant participant = useCase.apply(new SInscrireCommande("alice@esgi.fr", "motdepasse123"));
 
@@ -65,7 +65,7 @@ class SInscrireUseCaseTest {
     }
 
     @Test
-    @DisplayName("l'email est normalise en minuscules et debarrasse des espaces")
+    @DisplayName("l'email est normalisé en minuscules et débarrassé des espaces")
     void emailNormalise() {
         Participant participant = useCase.apply(new SInscrireCommande("  Alice@ESGI.fr  ", "motdepasse123"));
 
@@ -73,7 +73,7 @@ class SInscrireUseCaseTest {
     }
 
     @Test
-    @DisplayName("refuse un email deja inscrit")
+    @DisplayName("refuse un email déjà inscrit")
     void emailDejaPris() {
         useCase.apply(new SInscrireCommande("alice@esgi.fr", "motdepasse123"));
 

@@ -11,6 +11,6 @@ public record ReglementRequest(
         Long offreId,
 
         @NotNull(message = "Le montant est obligatoire")
-        @Positive(message = "Le montant doit etre strictement positif")
+        @Positive(message = "Le montant doit être strictement positif")
         BigDecimal montant) {
 }

@@ -36,13 +36,13 @@ public class FaireUneOffreUseCase {
     public Offre apply(FaireUneOffreCommande commande) {
         Objects.requireNonNull(commande, "commande");
         if (commande.montant() == null || commande.montant().signum() <= 0) {
-            throw new DonneesInvalidesException("Le montant de l'offre doit etre strictement positif");
+            throw new DonneesInvalidesException("Le montant de l'offre doit être strictement positif");
         }
 
         LocalDateTime maintenant = LocalDateTime.now(horloge);
 
         Enchere enchere = output.trouverEnchereParId(commande.enchereId())
-                .orElseThrow(() -> new RessourceIntrouvableException("Enchere", commande.enchereId()));
+                .orElseThrow(() -> new RessourceIntrouvableException("Enchère", commande.enchereId()));
         Participant participant = output.trouverParticipantParId(commande.participantId())
                 .orElseThrow(() -> new RessourceIntrouvableException("Participant", commande.participantId()));
 

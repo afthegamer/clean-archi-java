@@ -43,25 +43,25 @@ class EnchereTest {
     }
 
     @Nested
-    @DisplayName("Decroissance du prix")
+    @DisplayName("Décroissance du prix")
     class Prix {
 
         @Test
-        @DisplayName("avant le debut, le prix est le prix de depart")
+        @DisplayName("avant le début, le prix est le prix de départ")
         void avantLeDebut() {
             assertEquals(0, new BigDecimal("1000.00").compareTo(
                     enchere(StatutEnchere.OUVERTE).prixA(DEBUT.minusMinutes(5))));
         }
 
         @Test
-        @DisplayName("a l'instant du debut, aucun palier n'est franchi")
+        @DisplayName("à l'instant du début, aucun palier n'est franchi")
         void auDebut() {
             assertEquals(0, new BigDecimal("1000.00").compareTo(
                     enchere(StatutEnchere.OUVERTE).prixA(DEBUT)));
         }
 
         @Test
-        @DisplayName("le prix baisse d'un pas par intervalle ecoule")
+        @DisplayName("le prix baisse d'un pas par intervalle écoulé")
         void baisseParPalier() {
             Enchere enchere = enchere(StatutEnchere.OUVERTE);
             assertEquals(0, new BigDecimal("990.00").compareTo(enchere.prixA(DEBUT.plusMinutes(1))));
@@ -69,7 +69,7 @@ class EnchereTest {
         }
 
         @Test
-        @DisplayName("un palier entame ne compte pas : la baisse se fait a intervalle revolu")
+        @DisplayName("un palier entamé ne compte pas : la baisse se fait à intervalle révolu")
         void palierIncomplet() {
             assertEquals(0, new BigDecimal("990.00").compareTo(
                     enchere(StatutEnchere.OUVERTE).prixA(DEBUT.plusSeconds(119))));
@@ -109,27 +109,27 @@ class EnchereTest {
     }
 
     @Nested
-    @DisplayName("Recevabilite d'une offre")
+    @DisplayName("Recevabilité d'une offre")
     class Recevabilite {
 
         private final LocalDateTime instant = DEBUT.plusMinutes(3);
 
         @Test
-        @DisplayName("une offre au prix courant est acceptee")
+        @DisplayName("une offre au prix courant est acceptée")
         void auPrixCourant() {
             enchere(StatutEnchere.OUVERTE)
                     .verifierOffreRecevable(acheteur, new BigDecimal("970.00"), instant);
         }
 
         @Test
-        @DisplayName("une offre au-dessus du prix courant est acceptee")
+        @DisplayName("une offre au-dessus du prix courant est acceptée")
         void auDessus() {
             enchere(StatutEnchere.OUVERTE)
                     .verifierOffreRecevable(acheteur, new BigDecimal("980.00"), instant);
         }
 
         @Test
-        @DisplayName("une offre sous le prix courant est refusee")
+        @DisplayName("une offre sous le prix courant est refusée")
         void enDessous() {
             Enchere enchere = enchere(StatutEnchere.OUVERTE);
             assertThrows(MontantInsuffisantException.class, () ->
@@ -137,7 +137,7 @@ class EnchereTest {
         }
 
         @Test
-        @DisplayName("le vendeur ne peut pas encherir sur sa propre enchere")
+        @DisplayName("le vendeur ne peut pas enchérir sur sa propre enchère")
         void vendeurExclu() {
             Enchere enchere = enchere(StatutEnchere.OUVERTE);
             assertThrows(OperationInterditeException.class, () ->
@@ -145,7 +145,7 @@ class EnchereTest {
         }
 
         @Test
-        @DisplayName("une enchere deja adjugee n'accepte plus d'offre")
+        @DisplayName("une enchère déjà adjugée n'accepte plus d'offre")
         void dejaAdjugee() {
             Enchere enchere = enchere(StatutEnchere.ADJUGEE);
             assertThrows(EnchereFermeeException.class, () ->
@@ -161,7 +161,7 @@ class EnchereTest {
         }
 
         @Test
-        @DisplayName("pas d'offre apres la fin")
+        @DisplayName("pas d'offre après la fin")
         void apresFin() {
             Enchere enchere = enchere(StatutEnchere.OUVERTE);
             assertThrows(EnchereFermeeException.class, () ->
@@ -174,7 +174,7 @@ class EnchereTest {
     class Adjudication {
 
         @Test
-        @DisplayName("la premiere offre valide clot la vente")
+        @DisplayName("la première offre valide clôt la vente")
         void adjuge() {
             Enchere enchere = enchere(StatutEnchere.OUVERTE);
             enchere.adjuger();
@@ -192,7 +192,7 @@ class EnchereTest {
     }
 
     @Nested
-    @DisplayName("Invariants a la construction")
+    @DisplayName("Invariants à la construction")
     class Invariants {
 
         @Test

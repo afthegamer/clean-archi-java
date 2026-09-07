@@ -52,7 +52,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
 
     private EnchereEntity chargerEntite(Long enchereId) {
         return enchereJpaRepository.findById(enchereId)
-                .orElseThrow(() -> new RessourceIntrouvableException("Enchere", enchereId));
+                .orElseThrow(() -> new RessourceIntrouvableException("Enchère", enchereId));
     }
 
     @Override
