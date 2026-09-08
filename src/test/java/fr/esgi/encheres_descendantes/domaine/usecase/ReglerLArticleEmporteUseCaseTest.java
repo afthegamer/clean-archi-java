@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ReglerLArticleEmporteUseCaseTest {
@@ -86,17 +87,17 @@ class ReglerLArticleEmporteUseCaseTest {
                 new BigDecimal("970.00"), MAINTENANT.minusMinutes(10));
     }
 
-    private ReglerLArticleEmporteUseCase useCaseAvec(Offre offre, boolean dejaRegle) {
-        return new ReglerLArticleEmporteUseCase(new OutputPortDeTest(offre, dejaRegle), horloge);
-    }
-
     private OutputPortDeTest output;
     private ReglerLArticleEmporteUseCase useCase;
 
+    private void avec(Offre offre, boolean dejaRegle) {
+        output = new OutputPortDeTest(offre, dejaRegle);
+        useCase = new ReglerLArticleEmporteUseCase(output, horloge);
+    }
+
     @BeforeEach
     void avantChaqueTest() {
-        output = new OutputPortDeTest(offre(StatutEnchere.ADJUGEE), false);
-        useCase = new ReglerLArticleEmporteUseCase(output, horloge);
+        avec(offre(StatutEnchere.ADJUGEE), false);
     }
 
     @Test
@@ -109,15 +110,19 @@ class ReglerLArticleEmporteUseCaseTest {
         assertEquals(500L, reglement.getId());
         assertEquals(0, new BigDecimal("970.00").compareTo(reglement.getMontant()));
         assertEquals(MAINTENANT, reglement.getDateHeure());
+        assertEquals(100L, reglement.getOffre().getId());
+        assertNotNull(output.reglementEnregistre);
     }
 
     @Test
-    @DisplayName("on ne règle pas une enchère qui n'est pas adjugée")
+    @DisplayName("on ne règle pas une enchère qui n'est pas adjugée, et rien n'est enregistré")
     void enchereNonAdjugee() {
-        ReglerLArticleEmporteUseCase uc = useCaseAvec(offre(StatutEnchere.OUVERTE), false);
+        avec(offre(StatutEnchere.OUVERTE), false);
 
         assertThrows(OperationInterditeException.class, () ->
-                uc.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("970.00"))));
+                useCase.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("970.00"))));
+
+        assertNull(output.reglementEnregistre);
     }
 
     @Test
@@ -125,15 +130,19 @@ class ReglerLArticleEmporteUseCaseTest {
     void mauvaisParticipant() {
         assertThrows(OperationInterditeException.class, () ->
                 useCase.apply(new ReglerLArticleEmporteCommande(100L, 1L, new BigDecimal("970.00"))));
+
+        assertNull(output.reglementEnregistre);
     }
 
     @Test
     @DisplayName("une offre déjà réglée ne peut pas l'être deux fois")
     void dejaRegle() {
-        ReglerLArticleEmporteUseCase uc = useCaseAvec(offre(StatutEnchere.ADJUGEE), true);
+        avec(offre(StatutEnchere.ADJUGEE), true);
 
         assertThrows(OperationInterditeException.class, () ->
-                uc.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("970.00"))));
+                useCase.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("970.00"))));
+
+        assertNull(output.reglementEnregistre);
     }
 
     @Test
@@ -143,6 +152,17 @@ class ReglerLArticleEmporteUseCaseTest {
                 useCase.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("500.00"))));
         assertThrows(DonneesInvalidesException.class, () ->
                 useCase.apply(new ReglerLArticleEmporteCommande(100L, 2L, null)));
+
+        assertNull(output.reglementEnregistre);
+    }
+
+    @Test
+    @DisplayName("un montant supérieur à celui de l'offre est refusé")
+    void montantSuperieur() {
+        assertThrows(DonneesInvalidesException.class, () ->
+                useCase.apply(new ReglerLArticleEmporteCommande(100L, 2L, new BigDecimal("1500.00"))));
+
+        assertNull(output.reglementEnregistre);
     }
 
     @Test
@@ -150,5 +170,7 @@ class ReglerLArticleEmporteUseCaseTest {
     void offreIntrouvable() {
         assertThrows(RessourceIntrouvableException.class, () ->
                 useCase.apply(new ReglerLArticleEmporteCommande(999L, 2L, new BigDecimal("970.00"))));
+
+        assertNull(output.reglementEnregistre);
     }
 }
